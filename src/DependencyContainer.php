@@ -178,7 +178,7 @@ class DependencyContainer extends Field
      * @param mixed $resource
      * @param null  $attribute
      */
-    public function resolveForDisplay($resource, ?$attribute = null): void
+    public function resolveForDisplay($resource, $attribute = null): void
     {
         foreach ($this->meta['fields'] as $field) {
             $field->resolveForDisplay($resource);
@@ -198,8 +198,11 @@ class DependencyContainer extends Field
                 continue;
             }
             // inverted
-            if (array_key_exists('nullOrZero', $dependency) && in_array($resource->{$dependency['property']},
-                    [null, 0, '0'], true)) {
+            if (array_key_exists('nullOrZero', $dependency) && in_array(
+                $resource->{$dependency['property']},
+                [null, 0, '0'],
+                true
+            )) {
                 $this->meta['dependencies'][$index]['satisfied'] = true;
                 continue;
             }
@@ -236,7 +239,6 @@ class DependencyContainer extends Field
                     continue;
                 }
             }
-
         }
     }
 
@@ -290,8 +292,10 @@ class DependencyContainer extends Field
      */
     public function areDependenciesSatisfied(NovaRequest $request)
     {
-        if (!isset($this->meta['dependencies'])
-            || !is_array($this->meta['dependencies'])) {
+        if (
+            !isset($this->meta['dependencies'])
+            || !is_array($this->meta['dependencies'])
+        ) {
             return false;
         }
 
@@ -309,20 +313,26 @@ class DependencyContainer extends Field
             }
 
             // dependsOnNullOrZero
-            if (array_key_exists('nullOrZero', $dependency)
-                && in_array($request->get($dependency['property']), [null, 0, '0', ''], true)) {
+            if (
+                array_key_exists('nullOrZero', $dependency)
+                && in_array($request->get($dependency['property']), [null, 0, '0', ''], true)
+            ) {
                 $satisfiedCounts++;
             }
 
             // dependsOnIn
-            if (array_key_exists('in', $dependency)
-                && in_array($request->get($dependency['property']), $dependency['in'])) {
+            if (
+                array_key_exists('in', $dependency)
+                && in_array($request->get($dependency['property']), $dependency['in'])
+            ) {
                 $satisfiedCounts++;
             }
 
             // dependsOnNotIn
-            if (array_key_exists('notin', $dependency)
-                && !in_array($request->get($dependency['property']), $dependency['notin'])) {
+            if (
+                array_key_exists('notin', $dependency)
+                && !in_array($request->get($dependency['property']), $dependency['notin'])
+            ) {
                 $satisfiedCounts++;
             }
 
@@ -332,10 +342,12 @@ class DependencyContainer extends Field
             }
 
             // dependsOn
-            if (array_key_exists('value', $dependency)
+            if (
+                array_key_exists('value', $dependency)
                 && !array_key_exists('in', $dependency)
                 && !array_key_exists('notin', $dependency)
-                && !array_key_exists('nullOrZero', $dependency)) {
+                && !array_key_exists('nullOrZero', $dependency)
+            ) {
                 if ($dependency['value'] instanceof BackedEnum) {
                     if ($dependency['value']->value == $request->get($dependency['property'])) {
                         $satisfiedCounts++;
@@ -363,9 +375,11 @@ class DependencyContainer extends Field
         // if dependencies are not satisfied
         // or no fields as dependency exist
         // return empty rules for dependency container
-        if (!$this->areDependenciesSatisfied($request)
+        if (
+            !$this->areDependenciesSatisfied($request)
             || !isset($this->meta['fields'])
-            || !is_array($this->meta['fields'])) {
+            || !is_array($this->meta['fields'])
+        ) {
             return $fieldsRules;
         }
 
