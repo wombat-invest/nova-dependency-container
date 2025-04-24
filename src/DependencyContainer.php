@@ -247,9 +247,9 @@ class DependencyContainer extends Field
      *
      * @param mixed  $resource
      * @param string $attribute
-     * @return array|mixed
+     * @return void
      */
-    public function resolve($resource, $attribute = null)
+    public function resolve($resource, ?string $attribute = null): void
     {
         foreach ($this->meta['fields'] as $field) {
             $field->resolve($resource, $attribute);
