@@ -266,7 +266,7 @@ class DependencyContainer extends Field
      * @param             $attribute
      * @param null        $requestAttribute
      */
-    public function fillInto(NovaRequest $request, $model, $attribute, $requestAttribute = null)
+    public function fillInto(NovaRequest $request, object $model, string $attribute, ?string $requestAttribute = null)
     {
         $callbacks = [];
 
@@ -432,7 +432,7 @@ class DependencyContainer extends Field
      * @param NovaRequest $request
      * @return array
      */
-    public function getRules(NovaRequest $request)
+    public function getRules(NovaRequest $request): array
     {
         return $this->getSituationalRulesSet($request);
     }
@@ -441,9 +441,9 @@ class DependencyContainer extends Field
      * Get the creation rules for this field.
      *
      * @param NovaRequest $request
-     * @return array|string
+     * @return array
      */
-    public function getCreationRules(NovaRequest $request)
+    public function getCreationRules(NovaRequest $request): array
     {
         $fieldsRules = $this->getSituationalRulesSet($request, 'getCreationRules');
 
@@ -459,7 +459,7 @@ class DependencyContainer extends Field
      * @param NovaRequest $request
      * @return array
      */
-    public function getUpdateRules(NovaRequest $request)
+    public function getUpdateRules(NovaRequest $request): array
     {
         $fieldsRules = $this->getSituationalRulesSet($request, 'getUpdateRules');
 
